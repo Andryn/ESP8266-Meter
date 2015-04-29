@@ -1,6 +1,5 @@
---==========================Module Part======================
+--==Module Part==
 local moduleName = ...
-print('loaded',moduleName)
 local M = {}
 _G[moduleName] = M
 
@@ -30,12 +29,10 @@ local function connect (conn, data)
                 C=nil
                 package.loaded["config"]=nil
                 _G["config"]=nil                
-                if string.find(vars, "&RST=1&") then
-                    tmr.alarm(0,2000,0,function()
-                        node.dsleep(1000000)
-                    end)
-                end
                 f='redirect.htm'
+                if string.find(vars, "&RST=1&") then
+                    tmr.alarm(0, 5000, 0, function() node.restart() end)
+                end
             end
             file.open(f,"r")
             while true do
@@ -50,7 +47,6 @@ local function connect (conn, data)
             cn:close()
         end)
 end
-
 -- Create the httpd server
 function M.doHTTP()
     local svr = net.createServer(net.TCP, 30)

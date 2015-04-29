@@ -1,11 +1,9 @@
---==========================Module Part======================
+--==Module Part==
 local moduleName = ...
-print('loaded',moduleName)
 local M = {}
 _G[moduleName] = M
-----------------------------Default config-------------------
+--==Default config==--
 if cfg==nil then 
---cfg init--
     cfg = {}
     cfg.ID=""
     cfg.pIN=5
@@ -20,8 +18,6 @@ if cfg==nil then
     cfg.mqRp=60
 end
 
---==========================Local parameters===========
-
 function M.loadcfg()
     local jn = require "cjson"
     if file.open("cfg.json","r")==nil then return end
@@ -33,6 +29,7 @@ function M.savecfg()
     local jn = require "cjson"
     file.open("cfg.json","w+")
     file.writeline(jn.encode(cfg))
+    file.flush()
     file.close()
 end
 

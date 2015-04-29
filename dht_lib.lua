@@ -10,7 +10,6 @@
 --DHT22 Tested->read22
 --==========================Module Part======================
 local moduleName = ...
-print('moduleName',moduleName)
 local M = {}
 _G[moduleName] = M
 --==========================Local the UMI and TEMP===========

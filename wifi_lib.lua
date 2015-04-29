@@ -1,6 +1,5 @@
 --==========================Module Part======================
 local moduleName = ...
-print('loaded',moduleName)
 local M = {}
 _G[moduleName] = M
 --==========================Local parameters===========
@@ -11,13 +10,12 @@ local function ledinit()
         pwm.start(p)
     end
 end
-ledinit()
+
 local function led(r,g,b) 
     pwm.setduty(8,r) 
     pwm.setduty(6,g) 
     pwm.setduty(7,b) 
 end
-wifi.sleeptype(1) -- 0=NONE_SLEEP_T, 1 =LIGHT_SLEEP_T, 2 = MODEM_SLEEP_T
 
 local wifi_ap=function()
     wifi.setmode(wifi.SOFTAP)
@@ -51,12 +49,13 @@ end
 
 --Out--
 function M.wifi(ap)
-    if ap then
-        cfg.MAC=wifi_ap()
+    wifi.sleeptype(1) -- 0=NONE_SLEEP_T, 1 =LIGHT_SLEEP_T, 2 = MODEM_SLEEP_T
+    ledinit()
+    if ap==1 then
+        return wifi_ap()
     else
-        cfg.MAC=wifi_st()
+        return wifi_st()
     end
-    return true
 end
 
 return M

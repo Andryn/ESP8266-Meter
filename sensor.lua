@@ -1,6 +1,5 @@
 --==========================Module Part======================
 local moduleName = ...
-print('loaded',moduleName)
 local M = {}
 _G[moduleName] = M
 
@@ -10,6 +9,7 @@ local t              -- Temperature
 local h              -- Humidity
 local count = 0      -- Interations
 local tm             -- Start Time
+local sc = 0         -- default secure mode
 
 function mqtt_do()
     count = count + 1  -- For testing number of interations before failure
@@ -33,7 +33,8 @@ function mqtt_do()
         -- MQTT
         if t~=nil and h~=nil then
             m = mqtt.Client(cfg.ID, 120, cfg.mqUser, cfg.mqPwd)
-            m:connect( cfg.mqHost , cfg.mqPort, 0, function(conn)
+            --print("connect to ",cfg.ID, 120, cfg.mqUser, cfg.mqPwd, cfg.mqHost , cfg.mqPort, sc)
+            m:connect( cfg.mqHost , cfg.mqPort, sc, function(conn)
                 print("Connected to MQTT:" .. cfg.mqHost .. ":" .. cfg.mqPort .." as " .. cfg.ID )
                 mqtt_state = 20 -- Go to publish Temperature
             end)
@@ -56,6 +57,7 @@ function mqtt_do()
         print("Publishing..."..mqtt_state)
      else
         print("node.dsleep...")
+        if m~=nil then m:close() end
         tmr.stop(0)
         node.dsleep(1000000*cfg.mqRp)
      end
@@ -64,6 +66,6 @@ end
 
 
 function M.doSensor()
-    tmr.alarm(0, 1000, 1, function() mqtt_do() end)
+    tmr.alarm(0, 2000, 1, function() mqtt_do() end)
 end
 return M

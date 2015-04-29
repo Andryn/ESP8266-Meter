@@ -20,15 +20,14 @@ print("3 ", node.heap())
 
 --Load WIFI--
 W=require("wifi_lib")
-W.wifi(ap)
+cfg.MAC=W.wifi(ap)
 W=nil
 package.loaded["wifi_lib"]=nil
 _G["wifi_lib"]=nil
 collectgarbage()
 print("4 ", node.heap())
 
-
-if ap then
+if ap==1 then
     print('Mode AP, do HTTP')
     --Load HTTPD--
     H=require("httpd")
