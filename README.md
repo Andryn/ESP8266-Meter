@@ -1,4 +1,4 @@
-# ESP8266-LightSwitch
+# ESP8266-Meter
 Meter temperature and humidity on ESP8266 and DHT22 based  for <a href="http://www.aliexpress.com/af/ESP8266-ESP%25252d12-Board.html">ESP8266 ESP-12 Full Evaluation Board</a>.
 Publish data to MQTT broker.
 Work on <a href="https://github.com/nodemcu/nodemcu-firmware/releases/tag/0.9.6-dev_20150406">NodeMCU 0.9.6</a>
