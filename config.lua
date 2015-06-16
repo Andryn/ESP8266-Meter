@@ -13,7 +13,9 @@ if cfg==nil then
     cfg.mqPort=1883
     cfg.mqUser=""
     cfg.mqPwd=""    
-    cfg.pMTR=1
+    cfg.pDHT=1 --Commet this line, if DHT22 not present
+    cfg.pSDA=4 --Commet this line, if BMP180 not present
+    cfg.pSCL=2 --Commet this line, if BMP180 not present
     cfg.mqT=""
     cfg.mqRp=60
 end
