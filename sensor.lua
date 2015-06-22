@@ -9,14 +9,12 @@ local t              -- Temperature
 local h              -- Humidity
 local p              -- Pressure
 local count = 0      -- Interations
-local tm             -- Start Time
 local sc = 0         -- default MQTT secure mode
 
 function mqtt_do()
     count = count + 1  -- For testing number of interations before failure
-    if count==1 then tm=tmr.time() end
-    if tmr.time()-tm>60 then --If working > 60s, then node.dsleep
-        print("No connected. GoTo node.dsleep", tm, tmr.time())
+    if tmr.time() > 60 then --If working > 60s, then node.dsleep
+        print("No connected. GoTo node.dsleep", tmr.time())
         mqtt_state = 30
     end
     if mqtt_state < 5 then
@@ -92,8 +90,8 @@ function mqtt_do()
         end)
      elseif mqtt_state == 23 then
           mqtt_state = 25 -- Publishing...
-          m:publish(cfg.mqT..'time',tm, 0, 0, function(conn)
-              print(" Sent messeage #"..count.."\nTopic:"..cfg.mqT..'time'.."\nTime:"..tm)
+          m:publish(cfg.mqT..'time',tmr.time(), 0, 0, function(conn)
+              print(" Sent messeage #"..count.."\nTopic:"..cfg.mqT..'time'.."\nTime:"..tmr.time())
               mqtt_state = 30  -- Go to publish vdd
           end)
      elseif mqtt_state == 25 then
