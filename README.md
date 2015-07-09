@@ -4,7 +4,7 @@ If you not have DHT22, then comment line cfg.pDHT=1 in config.lua.
 If you not have BMP180, then comment lines cfg.pSDA=4 and cfg.pSCL=2 in config.lua.
 
 Publish data to MQTT broker.
-Work on <a href="https://github.com/nodemcu/nodemcu-firmware/releases/tag/0.9.6-dev_20150406">NodeMCU 0.9.6</a>
+Work on <a href="https://github.com/nodemcu/nodemcu-firmware/releases/tag/0.9.6-dev_20150704">NodeMCU 0.9.6 build 20150704</a>
 
 ## Hardware
 <table>

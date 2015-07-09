@@ -21,31 +21,29 @@ function mqtt_do()
         mqtt_state = wifi.sta.status() --State: Waiting for wifi
     elseif mqtt_state == 5 then
         mqtt_state = 25 -- Publishing...
+        t = nil
+        h = nil
+        p = nil
         if cfg.pDHT~=nil then
-            DHT= require("dht_lib")
-            DHT.read22(cfg.pDHT)
-            t = DHT.getTemperature()
-            h = DHT.getHumidity()
-            -- release module
-            DHT = nil
-            package.loaded["dht_lib"]=nil
-            _G["dht_lib"]=nil
-        else
-            h = nil
-            t = nil
+            local s, t1, h1, t2, h2 = dht.read(cfg.pDHT)
+            if s == dht.OK then
+                t = string.format("%d.%03d", math.floor(t1),t2)
+                h = string.format("%d.%03d", math.floor(h1),h2)
+            end
         end
         if cfg.pSDA~=nil and cfg.pSCL~=nil then
             -- Pressure
             bmp180 = require("bmp180")
             bmp180.init(cfg.pSDA, cfg.pSCL)
             bmp180.read(1)
-            if t==nil or t==-32767 then t = bmp180.getTemperature() end
+            if t==nil then 
+                local t1 = bmp180.getTemperature() 
+                t=string.format("%d.%d", t1/10,t1%10)
+            end
             p = bmp180.getPressure()
             bmp180 = nil
             package.loaded["bmp180"]=nil
             _G["bmp180"]=nil
-        else
-            p = nil
         end
         -- MQTT
         if t~=nil or h~=nil or p~=nil then
