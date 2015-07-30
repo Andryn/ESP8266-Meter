@@ -9,6 +9,7 @@ local t              -- Temperature
 local h              -- Humidity
 local p              -- Pressure
 local count = 0      -- Interations
+local tm = 0         -- Working time
 local sc = 0         -- default MQTT secure mode
 
 function mqtt_do()
@@ -88,8 +89,9 @@ function mqtt_do()
         end)
      elseif mqtt_state == 23 then
           mqtt_state = 25 -- Publishing...
-          m:publish(cfg.mqT..'time',tmr.time(), 0, 0, function(conn)
-              print(" Sent messeage #"..count.."\nTopic:"..cfg.mqT..'time'.."\nTime:"..tmr.time())
+          tm = tmr.time()
+          m:publish(cfg.mqT..'time',tm, 0, 0, function(conn)
+              print(" Sent messeage #"..count.."\nTopic:"..cfg.mqT..'time'.."\nTime:"..tm)
               mqtt_state = 30  -- Go to publish vdd
           end)
      elseif mqtt_state == 25 then
@@ -104,6 +106,6 @@ function mqtt_do()
 end
 
 function M.doSensor()
-    tmr.alarm(0, 2000, 1, function() mqtt_do() end)
+    tmr.alarm(0, 1100, 1, function() mqtt_do() end)
 end
 return M
